@@ -17,14 +17,18 @@ A list of technologies used within the project:
 ## Installation
 ***
 To run the project you need to have ASP .Net Core 6, npm and docker installed on your machine.
+Clone the project:
+```
+$ git clone https://github.com/startagene/testtask
+```
 
 this part will run SQL Server in docker:
 ```
-$ git clone https://github.com/startagene/testtask
 $ docker-compose up
 ```
-
 open and run backend in Visual Studio (you should see swagger if all's ok)
+
+***
 then open another terminal window
 ```
 $ cd ui
