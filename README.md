@@ -13,7 +13,8 @@ A list of technologies used within the project:
 * [ASP. Net Core](https://docs.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-6.0?view=aspnetcore-6.0): Version 6 
 * [React js](https://reactjs.org/): Version 18.2
 * [EF Core](https://docs.microsoft.com/en-us/ef/core/): Version 6
-* [Docker](https://www.docker.com//): Version 20
+* [React-bootstrap](https://www.docker.com//): Version 2.4.0
+* [Bootstrap](https://www.docker.com//): Version 5.1.3
 ## Installation
 ***
 To run the project you need to have ASP .Net Core 6, npm and docker installed on your machine.
