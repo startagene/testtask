@@ -30,7 +30,7 @@ $ docker-compose up
 open and run backend in Visual Studio (you should see swagger if all's ok)
 
 ***
-then open another terminal window
+then open another terminal window to run UI
 ```
 $ cd ui
 $ npm install
