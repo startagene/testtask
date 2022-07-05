@@ -73,7 +73,7 @@ const Task1 = () => {
     )
 }
 
-const isValidEmail = (email: string) => {
+const isValidEmail = (email?: string) => {
     return !!String(email)
       .toLowerCase()
       .match(
