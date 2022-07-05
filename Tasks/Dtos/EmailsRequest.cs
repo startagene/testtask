@@ -2,6 +2,6 @@
 {
     public class EmailsRequest
     {
-        public List<string> Emails { get; set; }
+        public string[] Emails { get; set; }
     }
 }

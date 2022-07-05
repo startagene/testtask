@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Tasks.Domain;
 using Tasks.Dtos;
+using Tasks.Services;
 
 namespace Tasks.Controllers
 {
@@ -10,58 +11,23 @@ namespace Tasks.Controllers
     [Route("api/[controller]")]
     public class TasksController : ControllerBase
     {
+        private readonly IEmailsService emailsService;
 
-        private readonly ILogger<TasksController> _logger;
-        private readonly TasksDbContext tasksDbContext;
-
-        public TasksController(ILogger<TasksController> logger, TasksDbContext tasksDbContext)
+        public TasksController(IEmailsService emailsService)
         {
-            _logger = logger;
-            this.tasksDbContext = tasksDbContext;
+            this.emailsService = emailsService;
         }
 
         [HttpPut("CheckEmailsThatAreNotInDb", Name = "CheckEmailsThatAreNotInDb")]
         public async Task<IEnumerable<string>> CheckEmailsThatAreNotInDb([FromBody]EmailsRequest request)
         {
-            List<string> result = new List<string>();
-            await tasksDbContext.Database.GetDbConnection().OpenAsync();
-
-            using (var command = tasksDbContext.Database.GetDbConnection().CreateCommand())
-            {
-                command.CommandText = @"
-                    SELECT e.email 
-                    FROM 
-                    (
-                      VALUES" + string.Join(',', request.Emails.Where(s => !string.IsNullOrWhiteSpace(s)).Select(e => "('" + e + "')")) + @"
-                    ) AS e(email)
-                    EXCEPT
-                    SELECT Email FROM dbo." + nameof(tasksDbContext.EmailRecords) + ";";
-                using (var reader = await command.ExecuteReaderAsync())
-                {
-                    while (reader.Read())
-                    {
-                        result.Add((string)reader.GetValue(0));
-                    }
-                }
-            }
-
-            return result;
+            return await this.emailsService.GetEmailsThatAreNotInDb(request.Emails);
         }
-
-
 
         [HttpPost("emails", Name = "Add Emails")]
         public async Task AddEmailsToDb([FromBody] EmailsRequest request)
         {
-            request.Emails.ForEach(email =>
-            {
-                tasksDbContext.EmailRecords.Add(new EmailRecord
-                {
-                    Email = email,
-                });
-            });
-
-            await tasksDbContext.SaveChangesAsync();
+            await this.emailsService.AddEmailsToDb(request.Emails);
         }
 
         [HttpGet("task2data", Name = "Task 2 data")]
