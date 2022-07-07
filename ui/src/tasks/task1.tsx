@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useContext } from "react";
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import ErrorContext from "../ErrorContext";
 
 const Task1 = () => {
+    const { showError } = useContext(ErrorContext);
     const [emailsInputValue, setEmailsInputValue] = useState('');
     const [emailsThatAreNotInDb, setEmailsThatAreNotInDb] = useState([]);
     const emailsThatAreNotInDbFormatted = useMemo(() => {
@@ -14,7 +16,9 @@ const Task1 = () => {
         const emails = emailsInputValue.split(',').map(email => email.trim());
         const invalidEmail = emails.find(email => !isValidEmail(email));
         if (invalidEmail) {
-            alert('Email "' + invalidEmail + '" is invalid. Please fix all emails before proceeding.')
+            showError({
+                message: 'Email "' + invalidEmail + '" is invalid. Please fix all emails before proceeding.'
+            })
             return;
         }
 
@@ -28,6 +32,10 @@ const Task1 = () => {
 
         if (result.status === 200) {
             setEmailsThatAreNotInDb(await result.json());
+        } else {
+            showError({
+                message: `Error received. Status: ${result.status}, message: ${result.statusText}, data: ${await result.text()}`
+            })
         }
     }
 
@@ -44,6 +52,10 @@ const Task1 = () => {
         if (result.status === 200) {
             alert('Success');
             setEmailsThatAreNotInDb([])
+        } else {
+            showError({
+                message: `Error received. Status: ${result.status}, message: ${result.statusText}, data: ${await result.text()}`
+            })
         }
     }
 
