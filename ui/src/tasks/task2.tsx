@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 const Task2 = () => {
     const [task2Data, setTask2Data] = useState([]);
     const task2DataFormatted = useMemo(() => {
-        return task2Data.join(', ');
+        return task2Data.join('\n');
     }, [task2Data])
 
     const getData = async () => {

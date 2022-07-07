@@ -35,6 +35,10 @@ namespace Tasks.Controllers
         {
             return Enumerable.Range(1, 100).Select(i =>
             {
+                if (i % 3 == 0 && i % 5 == 0)
+                {
+                    return "FooBar";
+                }
                 if (i % 3 == 0)
                 {
                     return "Foo";
